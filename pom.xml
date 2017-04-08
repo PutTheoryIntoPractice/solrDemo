@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.szp</groupId>
-    <artifactId>TestSolr</artifactId>
+    <artifactId>solrDemo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

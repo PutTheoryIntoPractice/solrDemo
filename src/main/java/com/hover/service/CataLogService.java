@@ -147,7 +147,8 @@ public class CataLogService {
     }
 
     /**
-     * facet：分类count
+     * facet：solr多级分类功能
+     * facet是solr的一个重要特性，可以一次实现根据多个字段的分类统计
      * @return
      * @throws Exception
      */

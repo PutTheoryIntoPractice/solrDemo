@@ -1,6 +1,6 @@
-package com.hover.service;
+package com.szp.service;
 
-import com.hover.bean.CatalogBean;
+import com.szp.bean.CatalogBean;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;

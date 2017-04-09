@@ -1,5 +1,5 @@
-import com.hover.bean.CatalogBean;
-import com.hover.service.CataLogService;
+import com.szp.bean.CatalogBean;
+import com.szp.service.CataLogService;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;

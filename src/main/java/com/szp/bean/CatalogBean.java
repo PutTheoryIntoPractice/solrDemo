@@ -1,4 +1,4 @@
-package com.hover.bean;
+package com.szp.bean;
 
 import org.apache.solr.client.solrj.beans.Field;
 

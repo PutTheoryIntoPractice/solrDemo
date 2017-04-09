@@ -1,4 +1,4 @@
-package com.szp.bean;
+package com.hover.bean;
 
 import org.apache.solr.client.solrj.beans.Field;
 
@@ -14,6 +14,36 @@ public class CatalogBean {
     private String fatherid;
     @Field
     private String photo;
+    @Field
+    private String iyear;
+    @Field
+    private String iway;
+    @Field
+    private String onsale;
+
+    public String getIyear() {
+        return iyear;
+    }
+
+    public void setIyear(String iyear) {
+        this.iyear = iyear;
+    }
+
+    public String getIway() {
+        return iway;
+    }
+
+    public void setIway(String iway) {
+        this.iway = iway;
+    }
+
+    public String getOnsale() {
+        return onsale;
+    }
+
+    public void setOnsale(String onsale) {
+        this.onsale = onsale;
+    }
 
     public String getCatalogid() {
         return catalogid;

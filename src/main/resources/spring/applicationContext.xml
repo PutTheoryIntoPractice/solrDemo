@@ -17,6 +17,6 @@
     </bean>
 
     <!-- Spring 自动扫描包 -->
-    <context:component-scan base-package="com.szp" />
+    <context:component-scan base-package="com.hover" />
 
 </beans>

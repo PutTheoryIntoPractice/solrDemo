@@ -1,5 +1,9 @@
-import com.szp.bean.CatalogBean;
-import com.szp.service.CataLogService;
+import com.hover.bean.CatalogBean;
+import com.hover.service.CataLogService;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +66,42 @@ public class TestCataLogService {
         cataLogService.updateMultiValueAdd(44, "photo", list);
 
         cataLogService.closeClient();
+    }
+
+    @Test
+    public void testQuery() throws Exception {
+        QueryResponse queryResponse = cataLogService.query();
+        SolrDocumentList results = queryResponse.getResults();
+        System.out.println(results.toString());
+        System.out.println("total:" + results.getNumFound());
+        for (SolrDocument solrDocument: results) {
+            System.out.println("-------" + solrDocument.get("catalogid") + "-------");
+            System.out.println("车型id:" + solrDocument.get("catalogid"));
+            System.out.println("车型名称:" + solrDocument.get("catalogname"));
+            System.out.println("车型fatherId:" + solrDocument.get("fatherid"));
+            System.out.println("车型照片:" + solrDocument.get("photo"));
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void testFacet() throws Exception {
+        //调用service获取solrclient的查询结果
+        QueryResponse queryResponse = cataLogService.facet();
+        //获取查询的结果总数
+        System.out.println("------total:" + queryResponse.getResults().getNumFound());
+        //获取一级类List
+        List<FacetField> facetFieldList = queryResponse.getFacetFields();
+        for (FacetField facetField: facetFieldList) {
+            //输出一级类名称
+            System.out.println("facetFeildName:" + facetField.getName() + "---count:" + facetField.getValues().size());
+            List<FacetField.Count> countlist = facetField.getValues();
+            for (FacetField.Count count: countlist) {
+                //输出二级类名称和count值
+                System.out.println(count.getName() + ":" + count.getCount());
+            }
+            System.out.println();
+        }
     }
 
 }

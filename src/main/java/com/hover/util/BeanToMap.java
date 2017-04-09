@@ -1,4 +1,4 @@
-package com.szp.util;
+package com.hover.util;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

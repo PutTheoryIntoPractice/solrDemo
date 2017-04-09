@@ -1,12 +1,11 @@
-package com.szp.service;
+package com.hover.service;
 
-import com.szp.bean.CatalogBean;
+import com.hover.bean.CatalogBean;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.FacetParams;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -123,60 +122,50 @@ public class CataLogService {
         client.add(doc);
     }
 
-    public void  getCatalog() throws Exception {
-        //创建查询对象
+    /**
+     * solr查询数据
+     * @return
+     * @throws Exception
+     */
+    public QueryResponse query() throws Exception {
         SolrQuery query = new SolrQuery();
         //q 查询字符串，如果查询所有*:*
         query.set("q", "catalogid:*");
         //fq 过滤条件，过滤是基于查询结果中的过滤
-        //query.set("fq", "product_catalog_name:幽默杂货");
+        //query.set("fq", "catalogname:*驰*");
+        //fq 此过滤条件可以同时搜索出奔驰和宝马两款车型，但是需要给catalogname配置相应的分词器
+        //query.set("fq", "catalogname:奔驰宝马");
         //sort 排序，请注意，如果一个字段没有被索引，那么它是无法排序的
-//		query.set("sort", "product_price desc");
+		query.set("sort", "catalogid desc");
         //start row 分页信息，与mysql的limit的两个参数一致效果
         query.setStart(0);
-        query.setRows(10);
-        //fl 查询哪些结果出来，不写的话，就查询全部，所以我这里就不写了
-//		query.set("fl", "");
-        //df 默认搜索的域
-        //query.set("df", "product_keywords");
+        query.setRows(100);
+        //fl 指定返回那些字段内容，用逗号或空格分隔多个
+		//query.set("fl", "catalogid,photo");
 
-        //======高亮设置===
-        //开启高亮
-        query.setHighlight(true);
-        //高亮域
-        query.addHighlightField("catalogid");
-        //前缀
-        query.setHighlightSimplePre("<span style='color:red'>");
-        //后缀
-        query.setHighlightSimplePost("</span>");
+        return client.query(query);
+    }
 
+    /**
+     * facet：分类count
+     * @return
+     * @throws Exception
+     */
+    public QueryResponse facet() throws Exception {
+        SolrQuery query = new SolrQuery();
+        query.set("q", "*:*");//必须有查询条件，否则一下操作都是没有意义的，会出现null的情况
+        //query.set("fq", "catalogname:*驰*");//过滤条件是建立在上述查询条件的基础之上的
+        query.set("fq", "-iyear:0");//不等于过滤条件
+        query.setFacet(true);//设置facet=true,默认为true
+        //这里设置的开始index和行数是没有作用的
+        //query.setStart(0);
+        //query.setRows(10);
+        query.addFacetField(new String[] {"iyear", "iway", "onsale"});//设置需要facet的字段
+        query.setFacetLimit(5);//限制facet返回的数量
+        //query.setFacetSort("index");//默认是按count来排序的
+        query.setFacetSort(FacetParams.FACET_SORT_COUNT);
 
-        //执行搜索
-        QueryResponse queryResponse = client.query(query);
-        //搜索结果
-        SolrDocumentList results = queryResponse.getResults();
-        //查询出来的数量
-        long numFound = results.getNumFound();
-        System.out.println("总查询出:" + numFound + "条记录");
-
-        //遍历搜索记录
-        //获取高亮信息
-        Map<String, Map<String, List<String>>> highlighting = queryResponse.getHighlighting();
-        for (SolrDocument solrDocument : results) {
-            System.out.println("车型id:" + solrDocument.get("catalogid"));
-            System.out.println("车型名称 :" + solrDocument.get("catalogname"));
-            System.out.println("车型fatherId:" + solrDocument.get("fatherid"));
-            System.out.println("车型照片:" + solrDocument.get("photo"));
-
-            //输出高亮信息
-            Map<String, List<String>> map = highlighting.get(solrDocument.get("catalogid"));
-            List<String> list = map.get("catalogid");
-            if(list != null && list.size() > 0){
-                System.out.println(list.get(0));
-            }
-        }
-
-        client.close();
+        return client.query(query);
     }
 
 }

@@ -30,6 +30,9 @@ public class TestCataLogService {
         doc.addField("catalogname", "测试车型update");
         doc.addField("fatherid", 0);
         doc.addField("photo", "/img.jpg");
+        doc.addField("iyear", "2017");
+        doc.addField("iway", "ceshi");
+        doc.addField("onsale", "1");
 
         cataLogService.addDoc(doc);
     }
@@ -41,6 +44,9 @@ public class TestCataLogService {
         bean.setCatalogname("测试");
         bean.setFatherid("1");
         bean.setPhoto("/car.jpg");
+        bean.setOnsale("1");
+        bean.setIway("ceshi");
+        bean.setIyear("2017");
 
         cataLogService.addBean(bean);
     }

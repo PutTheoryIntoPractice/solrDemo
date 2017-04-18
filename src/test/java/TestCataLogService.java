@@ -58,7 +58,7 @@ public class TestCataLogService {
 
     @Test
     public void testUpdate() throws Exception {
-        cataLogService.updateSet(44, "catalogname", "测试");
+        cataLogService.updateSet("44", "catalogname", "测试");
 
         cataLogService.updateInc(44, "fatherid", 1);
 
@@ -71,6 +71,16 @@ public class TestCataLogService {
         list.add("4.jpg");
         cataLogService.updateMultiValueAdd(44, "photo", list);
 
+        cataLogService.closeClient();
+    }
+
+    @Test
+    public void testUpdateNowTime() throws Exception {
+        QueryResponse queryResponse = cataLogService.query();
+        SolrDocumentList results = queryResponse.getResults();
+        for (SolrDocument solrDocument: results) {
+            cataLogService.updateSet(solrDocument.get("id").toString(), "update_time", System.currentTimeMillis() +"");
+        }
         cataLogService.closeClient();
     }
 

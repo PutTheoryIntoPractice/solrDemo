@@ -4,7 +4,7 @@
 
     <!--value为solr项目的部署地址，在配置文件里面已经配置好，通过spring加载-->
     <bean id="catalogHttpSolrClient" class="org.apache.solr.client.solrj.impl.HttpSolrClient">
-        <constructor-arg index="0" value="${solrBaseUrl}catalog"/>
+        <constructor-arg index="0" value="${solrBaseUrl}findCar"/>
     </bean>
 
 </beans>

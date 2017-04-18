@@ -65,12 +65,12 @@ public class CataLogService {
      * @param value
      * @throws Exception
      */
-    public void updateSet(int id, String field, String value) throws Exception {
+    public void updateSet(String id, String field, String value) throws Exception {
         SolrInputDocument doc = new SolrInputDocument();
         HashMap<String, Object> operation = new HashMap<String, Object>();
         operation.put("set", value);
         doc.addField(field, operation);
-        doc.addField("catalogid", id);
+        doc.addField("id", id);
         client.add(doc);
     }
 
@@ -130,13 +130,13 @@ public class CataLogService {
     public QueryResponse query() throws Exception {
         SolrQuery query = new SolrQuery();
         //q 查询字符串，如果查询所有*:*
-        query.set("q", "catalogid:*");
+        query.set("q", "*:*");
         //fq 过滤条件，过滤是基于查询结果中的过滤
         //query.set("fq", "catalogname:*驰*");
         //fq 此过滤条件可以同时搜索出奔驰和宝马两款车型，但是需要给catalogname配置相应的分词器
         //query.set("fq", "catalogname:奔驰宝马");
         //sort 排序，请注意，如果一个字段没有被索引，那么它是无法排序的
-		query.set("sort", "catalogid desc");
+		//query.set("sort", "catalogid desc");
         //start row 分页信息，与mysql的limit的两个参数一致效果
         query.setStart(0);
         query.setRows(100);
